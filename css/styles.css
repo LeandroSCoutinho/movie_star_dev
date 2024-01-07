@@ -48,6 +48,28 @@
 .bold {
     font-weight: bold;
 }
+
+.msg-container{
+    background-color: #000;
+    padding-top: 5px;
+}
+.msg {
+    width: 60%;
+    margin: 0 auto;
+    padding: 10px;
+}
+.msg.success{
+    color: #008000;
+    border: 1px solid #008000;
+    border-radius: 5px;
+    background-color: #e4f5e4; 
+}
+.msg.error{
+    color: #800000;
+    border: 1px solid #800000;
+    border-radius: 5px;
+    background-color: #f7d8d8; 
+}
 /* Home */
 #main-container {
     background-color: #000;
