@@ -4,7 +4,7 @@
    <div id="main-container" class="container-fluid">
         <div class="col-md-12">
             <div class="row" id="auth-row">
-                <div class="col-md-4">
+                <div class="col-md-4" id="login-container">
                     <h2>Entrar</h2>
                     <form action="" method="POST">
                         <input type="hidden" name="type" value="login">
