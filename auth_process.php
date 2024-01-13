@@ -29,7 +29,22 @@ if($type === "register"){
 
         //Verifica se o e-mail está cadastrado no sistema
         if($userDao->findByEmail($email) === false) {
-            echo "Nenhum usuário foi encontrado!";
+           
+            $user = new User();
+
+            // Criação de token e senha
+            $userToken = $user->generateToken();
+            $finalPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            $user->name = $name;
+            $user->lastname = $lastname; 
+            $user->email = $email;
+            $user->token =  $userToken;
+
+            $auth = true;
+
+            $userDao->create($user, $auth);
+
         } else {
             // Envia uma msg de erro, usuário já existe
             $message->setMessage("Usuário já cadastrado, tente outro e-mail.", "error", "back");

@@ -5,10 +5,12 @@
 
         private $conn;
         private $url;
+        private $message;
 
     public function __construct(PDO $conn, $url){
         $this->conn = $conn;
-        $this->url = $url;    
+        $this->url = $url;   
+        $this->message =  new Message($url); 
     }
 
     public function buildUser($data){
@@ -28,15 +30,59 @@
     }
     public function create(User $user, $authUser = false){
 
+        $stmt = $this->conn->prepare("INSERT INTO users (
+                name, lastname, email, password, token
+            ) VALUES (
+                :name, :lastname, :email, :password, :token
+            )");
+
+        $stmt->bindParam(':name', $user->name);
+        $stmt->bindParam(':lastname', $user->lastname);
+        $stmt->bindParam(':email', $user->email);
+        $stmt->bindParam(':password', $user->password);
+        $stmt->bindParam(':token', $user->token);
+
+        $stmt->execute();
+
+        //Autenticar usuário, caso auth seja true
+        if($authUser){
+            $this->setTokenToSession($user->token);
+        }
     }
     public function update(User $user){
 
     }
     public function verifyToken($protected = false){
 
+        if(!empty($_SESSION['token'])){
+
+            //Pega p token da session
+            $token = $_SESSION['token'];
+
+            $user = $this->findByToken($token);
+
+            if($user){
+                return $user;
+            }else if($protected){
+                // Redireciona usuário não identificado
+                $this->message->setMessage("Faça a autenticação para acessar essa página!","error","index.php");
+
+            }
+        }else if($protected){
+            // Redireciona usuário não identificado
+            $this->message->setMessage("Faça a autenticação para acessar essa página!","error","index.php");
+
+        }
+    
     }
     public function setTokenToSession($token, $redirect = true){
+        //Salvar token na session
+        $_SESSION["token"] = $token;
 
+        if($redirect){
+            //Redireciona para o perfil do usuario
+            $this->message->setMessage("Seja bem-vindo!","success","editprofile.php");
+        }
     }
     public function authenticateUser($email, $password){
 
@@ -45,7 +91,7 @@
 
         if($email != ""){
 
-            $stmt = $this->$conn->prepare("SELECT * FROM users WHERE email = :email");
+            $stmt = $this->conn->prepare("SELECT * FROM users WHERE email = :email");
 
             $stmt->bindParam(":email", $email);
 
@@ -66,6 +112,33 @@
 
     }
     public function findByToken($token){
+
+        if($token != ""){
+
+            $stmt = $this->conn->prepare("SELECT * FROM users WHERE token = :token");
+
+            $stmt->bindParam(":token", $token);
+
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+
+                $data = $stmt->fetch();
+                $user = $this->buildUser($data);
+
+                return $user;
+            }else{
+                return false;
+            }
+        }
+
+    }
+
+    function destroyToken(){
+
+        $_SESSION['token'] = " ";
+
+        $this->message->setMessage("Você fez o logout com sucesso!","success","index.php");
 
     }
     public function changePassword(User $user){
