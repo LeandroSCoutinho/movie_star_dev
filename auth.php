@@ -6,7 +6,7 @@
             <div class="row" id="auth-row">
                 <div class="col-md-4" id="login-container">
                     <h2>Entrar</h2>
-                    <form action="" method="POST">
+                    <form action="auth_process.php" method="POST">
                         <input type="hidden" name="type" value="login">
                         <div class="form-group">
                             <label for="email">E-mail</label>
@@ -16,7 +16,7 @@
                             <label for="password">Senha</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Digite sua senha">
                         </div>
-                        <input type="text" class="btn card-btn" value="Entrar">
+                        <input type="submit" class="btn card-btn" value="Entrar">
                     </form>
                 </div>
                 <div class="col-md-4" id="register-container">
