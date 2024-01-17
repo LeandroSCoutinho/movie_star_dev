@@ -37,7 +37,7 @@
                             <input type="text" class="form-control disable" id="email" name="email" 
                             placeholder="Digite o seu nome" value="<?= $userData->email ?>" readonly>
                         </div>
-                        <input type="submit" class="btn form-btn" value="Alterar">
+                        <input type="submit" class="btn form-btn card-btn" value="Alterar">
                     </div>
                     <div class="col-md-4">
                         <div id="profile-image-container" 
@@ -56,6 +56,24 @@
                     </div>
                 </div>
             </form>
+            <div class="row" id="change-password-container">
+                <div class="col-md-4">
+                    <h2>Alterar Senha</h2>
+                    <p class="page-description">Digite a nova senha e confirme, para alterar sua senha:</p>
+                    <form action="<?= $BASE_URL ?>user_process.php" method="POST">
+                        <input type="hidden" name="type" value="chagepassword">
+                        <div class="form-group">
+                            <label for="password">Senha:</label>
+                            <input type="password" class="form-control " id="password" name="password" placeholder="Digite sua senha">
+                        </div> 
+                        <div class="form-group">
+                            <label for="confirmpassword">Nova Senha:</label>
+                            <input type="password" class="form-control " id="confirmpassword" name="confirmpassword" placeholder="Digite sua nova senha">
+                        </div>
+                        <input type="submit" class="btn form-btn card-btn" value="Alterar Senha"> 
+                    </form>
+                </div>
+            </div>
         </div>
    </div>
 <?php
