@@ -1,7 +1,7 @@
 <?php
 
-    require_once("./models/User.php");
-    class UserDao implements UserDAOInterface{
+  require_once("./models/User.php");
+  class UserDao implements UserDAOInterface{
 
         private $conn;
         private $url;
@@ -205,6 +205,17 @@
     }
     public function changePassword(User $user){
 
+      $stmt = $this->conn->prepare("UPDATE users SET 
+        password = :password 
+        WHERE id = :id
+      ");
+
+      $stmt->bindParam(":password",$user->password);
+      $stmt->bindParam(":id", $user->password);
+
+      $stmt->execute();
+
+      $this->message->setMessage("Senha alterada com sucesso!","success","editprofile.php");
     }
-    }
+  }
 ?>

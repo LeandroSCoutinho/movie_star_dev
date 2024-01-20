@@ -14,13 +14,14 @@ $type = filter_input(INPUT_POST, "type");
 
 if ($type === "update"){
     
+    //Resgata dados do usuário
+    $userData = $userDao->verifyToken();
+    //Recebe dados do post
     $name = filter_input(INPUT_POST, "name");
     $lastname = filter_input(INPUT_POST, "lastname");
     $email = filter_input(INPUT_POST, "email");
     $bio = filter_input(INPUT_POST, "bio");
-
-     $userData = $userDao->verifyToken();
-
+    
     //Preenche os dados do usuário
     $userData->name = $name;
     $userData->lastname = $lastname;
@@ -52,7 +53,7 @@ if ($type === "update"){
             imagejpeg($imageFile, "./img/users/". $imageName, 100);
 
             $userData->image = $imageName;
-            
+
         } else {
             $message->setMessage("Tipo inválido de imagem, insira png ou jpeg!","error","back");
         }
@@ -61,8 +62,29 @@ if ($type === "update"){
     $userDao->update($userData);
 
 // Atualiza senha do usuário
-}else if ($type === "chagepassword") {
+}else if ($type === "changepassword") {
 
+    $password = filter_input(INPUT_POST, "password");
+    $confirmPassword = filter_input(INPUT_POST, "confirmpassword");
+
+    //Resgata dados do usuário
+    $userData = $userDao->verifyToken();
+    $id = $userData->id;
+
+    if($password === $confirmPassword){
+        // Cria um novo objeto de usuário
+        $user = new User();
+
+        $finalPassword = $user->generatePassword($password);
+
+        $user->password = $finalPassword;
+        $user->id = $id;
+
+        $userDao->changePassword($user);
+
+    }else{
+        $message->setMessage("As senhas não são iguais!","error","back");
+    }
 } else {
     $message->setMessage("Não foi possível atualizar os dados!","error","index.php");
 }

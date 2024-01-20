@@ -61,7 +61,7 @@
                     <h2>Alterar Senha</h2>
                     <p class="page-description">Digite a nova senha e confirme, para alterar sua senha:</p>
                     <form action="<?= $BASE_URL ?>user_process.php" method="POST">
-                        <input type="hidden" name="type" value="chagepassword">
+                        <input type="hidden" name="type" value="changepassword">
                         <div class="form-group">
                             <label for="password">Senha:</label>
                             <input type="password" class="form-control " id="password" name="password" placeholder="Digite sua senha">
