@@ -29,7 +29,7 @@
       $movie->trailer = $data["trailer"];
       $movie->category = $data["category"];
       $movie->length = $data["length"];
-      $movie->users_id = $data["users_id"];
+      $movie->users_id = $data["user_id"];
 
       return $movie;
 
