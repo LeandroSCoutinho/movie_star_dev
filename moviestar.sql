@@ -36,9 +36,9 @@ CREATE TABLE IF NOT EXISTS `movies` (
   `trailer` varchar(150) DEFAULT NULL,
   `category` varchar(50) DEFAULT NULL,
   `length` varchar(50) DEFAULT NULL,
-  `user_id` int UNSIGNED DEFAULT NULL,
+  `users_id` int UNSIGNED DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`)
+  KEY `users_id` (`users_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
