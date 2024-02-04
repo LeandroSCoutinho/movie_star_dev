@@ -4,7 +4,7 @@
   require_once("models/Message.php");
 
   // Review DAO
-  
+  require_once("dao/ReviewDAO.php");
 
   class MovieDAO implements MovieDAOInterface {
 
@@ -29,7 +29,14 @@
       $movie->trailer = $data["trailer"];
       $movie->category = $data["category"];
       $movie->length = $data["length"];
-      $movie->users_id = $data["user_id"];
+      $movie->users_id = $data["users_id"];
+
+      // Recebe as ratings do filme
+      $reviewDao = new ReviewDao($this->conn, $this->url);
+
+      $rating = $reviewDao->getRatings($movie->id);
+
+      $movie->rating = $rating;
 
       return $movie;
 
@@ -92,7 +99,7 @@
       $movies = [];
 
       $stmt = $this->conn->prepare("SELECT * FROM movies
-                                    WHERE user_id = :users_id");
+                                    WHERE users_id = :users_id");
 
       $stmt->bindParam(":users_id", $id);
 
@@ -167,9 +174,9 @@
     public function create(Movie $movie) {
 
       $stmt = $this->conn->prepare("INSERT INTO movies (
-        title, description, image, trailer, category, length, user_id
+        title, description, image, trailer, category, length, users_id
       ) VALUES (
-        :title, :description, :image, :trailer, :category, :length, :user_id
+        :title, :description, :image, :trailer, :category, :length, :users_id
       )");
 
       $stmt->bindParam(":title", $movie->title);
@@ -178,7 +185,7 @@
       $stmt->bindParam(":trailer", $movie->trailer);
       $stmt->bindParam(":category", $movie->category);
       $stmt->bindParam(":length", $movie->length);
-      $stmt->bindParam(":user_id", $movie->users_id);
+      $stmt->bindParam(":users_id", $movie->users_id);
 
       $stmt->execute();
 
